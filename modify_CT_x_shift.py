@@ -1,4 +1,5 @@
 import pydicom
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 import glob
@@ -33,7 +34,7 @@ def dicom_to_array(slices):
     return CT_array
 
 def shift_mask(mask, dx, ord=3):
-    """Shifts mask in x direction. Returns the shifted mask as a Numpy array.
+    """Shifts the mask in x direction. Returns the shifted mask as a Numpy array.
     Arguments:
     "mask"      Numpy array
     "dx"        the absolute value of the shift
@@ -81,15 +82,33 @@ def save_as_dicom(CT_modified, slices, out_path, dx):
 
 
 if __name__ == "__main__":
-    dicom_dir = '/Users/andreaberti/Desktop/tesi/pz_per_Aafke/CT_16-03-18'
+    parse = argparse.ArgumentParser(description="Modify a CT from a mask")
+    parse.add_argument('-d', '--dicom_dir', help='Directory of the original DICOM files')
+    parse.add_argument('-m', '--mask_mat', help='Path to the mask in MATLAB format')
+    parse.add_argument('-o', '--out_path', help='Path to the output directory')
+    args = parse.parse_args()
+    if args.dicom_dir == None:
+        dicom_dir = '/Users/andreaberti/Desktop/tesi/pz_per_Aafke/CT_16-03-18'
+    else:
+        dicom_dir = args.dicom_dir
+    
+    if args.mask_mat == None:
+        mask_mat = '/Users/andreaberti/Desktop/tesi/maschera.mat'
+    else:
+        mask_mat = args.mask_mat
+
+    if args.out_path == None:
+        out_path = '/Users/andreaberti/Desktop/tesi/pz_per_Aafke/CT_modified'
+    else:
+        out_path = args.out_path
+
     slices = read_dicom(dicom_dir)
     CT_array = dicom_to_array(slices)
-    maschera = sio.loadmat('/Users/andreaberti/Desktop/tesi/maschera.mat')
+    maschera = sio.loadmat(mask_mat)
     mask = maschera['Vnew']
     mask[mask>0] = 1
     check = True
     dx = 1
-    out_path = '/Users/andreaberti/Desktop/tesi/pz_per_Aafke/CT_modified'
     while check == True:
         mask_shifted = shift_mask(mask, dx)
         mask_new = mask_intersection(mask, mask_shifted)
