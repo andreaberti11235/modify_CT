@@ -109,3 +109,4 @@ venv.bak/
 # unnecessary py scripts
 PET_volumes_median_3.py
 PET_volumes_median_3_fast.py
+PET_volumes_prova.py
