@@ -106,6 +106,15 @@ venv.bak/
 # txt
 *.txt
 
+# .sh scripts
+amap.sh
+
+# .nii
+*.nii.gz
+
+# .mat
+*.mat
+
 # unnecessary py scripts
 PET_volumes_median_3.py
 PET_volumes_median_3_fast.py
