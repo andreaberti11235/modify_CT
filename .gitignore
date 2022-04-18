@@ -102,3 +102,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# txt
+*.txt
+
+# unnecessary py scripts
+PET_volumes_median_3.py
+PET_volumes_median_3_fast.py
